@@ -1,3 +1,6 @@
+# NOTE:最低限name, description, runsがないと警告が出る
+name: Hello
+description: 元気に挨拶してくれる画期的すぎるアクションです
 runs:
   using: "composite"
   steps:
