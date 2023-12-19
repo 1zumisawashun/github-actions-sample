@@ -13,8 +13,8 @@ jobs:
           node-version: "18"
       - name: Initialize
         uses: ./.github/actions/build
-      - name: export static html
-        run: npm run export
+      # - name: export static html
+      #   run: npm run export
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
