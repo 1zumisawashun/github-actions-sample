@@ -85,8 +85,8 @@ console.log(rawData);
 
 mkdirp.sync(path.join(nextMetaRoot, "analyze/"));
 fs.writeFileSync(
-  // path.join(nextMetaRoot, "analyze/__bundle_analysis.json"),
-  path.join(nextMetaRoot, "analyze/base.json"),
+  path.join(nextMetaRoot, "analyze/__bundle_analysis.json"),
+  // path.join(nextMetaRoot, "analyze/base.json"),
   rawData
 );
 

@@ -28,11 +28,5 @@
   },
   "volta": {
     "node": "18.19.0"
-  },
-  "nextBundleAnalysis": {
-    "budget": 358400,
-    "budgetPercentIncreaseRed": 20,
-    "minimumChangeThreshold": 0,
-    "showDetails": true
   }
 }
