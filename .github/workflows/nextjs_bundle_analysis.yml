@@ -1,5 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
+#
+# Based on https://github.com/hashicorp/nextjs-bundle-analysis/blob/main/template.yml
 
 name: "Next.js Bundle Analysis"
 
@@ -7,13 +9,8 @@ on:
   pull_request:
   push:
     branches:
-      - main # change this if your default branch is named differently
+      - "canary"
   workflow_dispatch:
-
-defaults:
-  run:
-    # change this if your nextjs app does not live at the root of the repo
-    working-directory: ./
 
 permissions:
   contents: read # for checkout repository
@@ -22,6 +19,10 @@ permissions:
 
 jobs:
   analyze:
+    strategy:
+      matrix:
+        next-dir: ["examples/next/faustwp-getting-started"]
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,18 +32,31 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install bundle analyzer dependency globally
+        run: npm install -g @next/bundle-analyzer
+
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
-      # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
-      # so the step above will fail to pull dependencies
-      # - uses: pnpm/action-setup@v2
-      #   name: Install pnpm
-      #   id: pnpm-install
-      #   with:
-      #     version: 7
-      #     run_install: true
+      - name: Build packages
+        run: npm run build
 
+      - name: Create "faust" cli bin
+        run: npm ci
+
+      # - name: Create example project .env.local file
+      #   working-directory: ${{ matrix.next-dir }}
+      #   run: |
+      #     cp .env.local.sample .env.local
+      - name: Add bundle analyzer to next.config.js
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
+          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
+      - name: Add bundle analyzer config to package.json
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
       - name: Restore next build
         uses: actions/cache@v3
         id: restore-build-cache
@@ -51,67 +65,55 @@ jobs:
         with:
           # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
           # ex: if your app builds to `dist`, replace `.next` with `dist`
-          path: .next/cache
+          path: ${{ matrix.next-dir }}/.next/cache
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
-      - name: Build next.js app
-        # change this if your site requires a custom build command
-        run: ./node_modules/.bin/next build
+      - name: Build Next.js example app
+        working-directory: ${{ matrix.next-dir }}
+        run: npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
-      - name: Analyze bundle
-        # run: npx -p nextjs-bundle-analysis report
-        run: node report-bundle-size.js
+      - name: Create bundle analysis report for this PR
+        working-directory: ${{ matrix.next-dir }}
+        run: npx -p nextjs-bundle-analysis report
 
-      - name: Upload bundle
-        uses: actions/upload-artifact@v2
+      - name: Upload bundle analysis report for this PR
+        uses: actions/upload-artifact@v3
         with:
           name: bundle
-          path: .next/analyze/__bundle_analysis.json
+          path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
 
-      - name: Download base branch bundle stats
+      - name: Download bundle analysis report for base branch
         uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
-          workflow: nextjs_bundle_analysis.yml
+          workflow: nextjs-bundle-analysis.yml
           branch: ${{ github.event.pull_request.base.ref }}
-          path: .next/analyze/base
+          path: ${{ matrix.next-dir }}/.next/analyze/base
 
-      # And here's the second place - this runs after we have both the current and
-      # base branch bundle stats, and will compare them to determine what changed.
-      # There are two configurable arguments that come from package.json:
-      #
-      # - budget: optional, set a budget (bytes) against which size changes are measured
-      #           it's set to 350kb here by default, as informed by the following piece:
-      #           https://infrequently.org/2021/03/the-performance-inequality-gap/
-      #
-      # - red-status-percentage: sets the percent size increase where you get a red
-      #                          status indicator, defaults to 20%
-      #
-      # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
-      # entry in your package.json file.
-      - name: Compare with base branch bundle
+      - name: Compare analysis reports from base branch and PR branch
         if: success() && github.event.number
-        run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
-
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          npx -p nextjs-bundle-analysis compare
       - name: Get Comment Body
         id: get-comment-body
         if: success() && github.event.number
+        working-directory: ${{ matrix.next-dir }}
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
           echo EOF >> $GITHUB_OUTPUT
-
       - name: Find Comment
         uses: peter-evans/find-comment@v2
         if: success() && github.event.number
         id: fc
         with:
           issue-number: ${{ github.event.number }}
-          body-includes: "<!-- __NEXTJS_BUNDLE -->"
+          body-includes: "<!-- __NEXTJS_BUNDLE_@faustwp/getting-started-example -->"
 
       - name: Create Comment
         uses: peter-evans/create-or-update-comment@v2
