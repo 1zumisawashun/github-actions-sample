@@ -1,4 +1,4 @@
-name: Example
+name: sample use composite hello action
 on: push
 jobs:
   run:

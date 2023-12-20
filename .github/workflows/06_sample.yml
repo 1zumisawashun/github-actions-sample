@@ -1,0 +1,8 @@
+name: sample use composite hello action
+on: push
+
+jobs:
+  job-say:
+    uses: ./.github/workflows/05_sample.yml
+    with:
+      name: 1zushun

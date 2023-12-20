@@ -1,5 +1,5 @@
-name: Hello
-description: 元気に挨拶してくれる画期的すぎるアクションです
+name: composite hello action
+description: ログアクションを共通化する
 inputs:
   target:
     description: あなたが挨拶したいのは誰ですか？
@@ -7,6 +7,7 @@ outputs:
   target:
     value: ${{ inputs.target }}
     description: 挨拶した相手
+
 runs:
   using: composite
   steps:

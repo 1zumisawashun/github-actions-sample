@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: sample echo log
 
 on: [push]
 
