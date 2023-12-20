@@ -22,6 +22,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "gzip-size": "^6.0.0",
+    "mkdirp": "^3.0.1",
     "typescript": "^5"
   },
   "volta": {
