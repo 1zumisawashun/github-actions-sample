@@ -34,6 +34,6 @@
     "budgetPercentIncreaseRed": 20,
     "minimumChangeThreshold": 0,
     "showDetails": true,
-    "buildOutputDirectory": "out"
+    "buildOutputDirectory": "./out"
   }
 }
