@@ -1,4 +1,4 @@
-name: Main
+name: sample use composite build action
 
 on:
   push:

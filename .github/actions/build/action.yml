@@ -1,12 +1,14 @@
-# NOTE:最低限name, description, runsがないと警告が出る
-name: Hello
-description: 元気に挨拶してくれる画期的すぎるアクションです
+# NOTE:最低限name・description・runsがないと警告が出る
+name: composite build action
+
+description: ビルドアクションを共通化する
+
 runs:
   using: "composite"
   steps:
     - name: Install dependencies
       run: npm ci
-      shell: bash
+      shell: bash # workflowsでは必要ないがcompositeでは必要になる
     - name: Check lint
       run: npm run lint
       shell: bash
