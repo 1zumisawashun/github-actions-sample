@@ -145,5 +145,5 @@ function getOptions(pathPrefix = process.cwd()) {
  */
 function getBuildOutputDirectory(options) {
   console.log(options.buildOutputDirectory, "options.buildOutputDirectory");
-  return options.buildOutputDirectory || ".next";
+  return options.buildOutputDirectory || "out";
 }
