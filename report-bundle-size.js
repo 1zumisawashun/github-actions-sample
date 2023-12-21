@@ -86,7 +86,6 @@ console.log(rawData);
 mkdirp.sync(path.join(nextMetaRoot, "analyze/"));
 fs.writeFileSync(
   path.join(nextMetaRoot, "analyze/__bundle_analysis.json"),
-  // path.join(nextMetaRoot, "analyze/base.json"),
   rawData
 );
 
@@ -145,5 +144,6 @@ function getOptions(pathPrefix = process.cwd()) {
  * @returns {string}
  */
 function getBuildOutputDirectory(options) {
+  console.log(options.buildOutputDirectory, "options.buildOutputDirectory");
   return options.buildOutputDirectory || ".next";
 }

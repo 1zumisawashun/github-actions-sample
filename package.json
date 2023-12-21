@@ -33,6 +33,7 @@
     "budget": 358400,
     "budgetPercentIncreaseRed": 20,
     "minimumChangeThreshold": 0,
-    "showDetails": true
+    "showDetails": true,
+    "buildOutputDirectory": "out"
   }
 }
