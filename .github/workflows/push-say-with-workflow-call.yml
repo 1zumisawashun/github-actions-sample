@@ -3,6 +3,6 @@ on: push
 
 jobs:
   job-say:
-    uses: ./.github/workflows/05_sample.yml
+    uses: ./.github/workflows/call/workflow-call-say.yml
     with:
       name: 1zushun
