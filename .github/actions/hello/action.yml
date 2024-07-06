@@ -1,4 +1,4 @@
-name: composite hello action
+name: composite-hello-action
 description: ログアクションを共通化する
 inputs:
   target:

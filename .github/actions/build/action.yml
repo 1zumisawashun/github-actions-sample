@@ -1,5 +1,5 @@
 # NOTE:最低限name・description・runsがないと警告が出る
-name: composite build action
+name: composite-build-action
 
 description: ビルドアクションを共通化する
 
