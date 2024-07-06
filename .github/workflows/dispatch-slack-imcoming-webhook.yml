@@ -11,9 +11,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: slackapi/slack-github-action@v1.26.0
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
-          channel-id: 'C05BZT995K8'
+          # channel-id: 'C05BZT995K8'
           payload: |
             {
               "text": "(ref: ${{ github.ref }}) :warning: \n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
