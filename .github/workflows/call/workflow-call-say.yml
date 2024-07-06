@@ -1,4 +1,5 @@
 # .github/workflows/_say.yml
+# workflow_callは.github/workflows配下に置かないといけないので注意
 name: say
 
 on:
