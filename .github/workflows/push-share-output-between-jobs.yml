@@ -1,3 +1,5 @@
+name: push-share-output-between-jobs
+
 on: push
 
 # https://swfz.hatenablog.com/entry/2020/04/18/160235

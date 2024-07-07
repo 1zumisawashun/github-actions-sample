@@ -1,4 +1,5 @@
-name: sample use composite hello action
+name: push-say-with-workflow-call
+
 on: push
 
 jobs:

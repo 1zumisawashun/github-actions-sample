@@ -1,3 +1,4 @@
+name: dispatch-print-tag
 # https://docs.github.com/ja/actions/using-workflows/triggering-a-workflow#defining-inputs-for-manually-triggered-workflows
 on:
   workflow_dispatch:

@@ -1,3 +1,4 @@
+name: dispatch-print-context
 on:
   workflow_dispatch:
   

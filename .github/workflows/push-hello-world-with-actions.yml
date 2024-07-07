@@ -1,4 +1,5 @@
-name: sample use composite hello action
+name: push-hello-world-with-actions
+
 on: push
 jobs:
   run:

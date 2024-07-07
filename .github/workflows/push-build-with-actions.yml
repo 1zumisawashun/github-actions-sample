@@ -1,4 +1,4 @@
-name: sample use composite build action
+name: push-build-with-actions
 
 on:
   push:

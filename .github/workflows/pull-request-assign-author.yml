@@ -1,4 +1,5 @@
-name: Assign Author
+name: pull-request-assign-author
+
 on:
   issues:
     types: [opened]

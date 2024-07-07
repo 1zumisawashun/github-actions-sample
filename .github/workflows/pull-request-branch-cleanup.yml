@@ -1,7 +1,9 @@
+name: pull-request-branch-cleanup
+
 on:
   pull_request:
     types: [closed]
-name: Branch Cleanup
+
 jobs:
   build:
     name: branch-cleanup-action
