@@ -7,24 +7,32 @@ jobs:
   slack-notification:
     runs-on: ubuntu-latest
     steps:
-      - name: Slack Notification with auto merge enabled
+      - name: Slack Notification
         if: github.ref == 'refs/heads/main'
         uses: slackapi/slack-github-action@v1.26.0
         env:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
-          # channel-id: 'C05BZT995K8'
           payload: |
             {
-              "text": "(ref: ${{ github.ref }}) :warning: \n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              "text": ":github: GHA結果: ${{ job.status }}\n\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "(ref: ${{ github.ref }}) :warning: \n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    "text": ":github: GHA結果: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "Author: <https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>"
+                    }
+                  ]
                 }
               ]
             }
