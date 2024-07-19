@@ -11,7 +11,7 @@ jobs:
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_FOR_PR_READY_FOR_REVIEW }} # あらかじめGithubのSettingにてSecretsを設定しておこう
+        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }} # あらかじめGithubのSettingにてSecretsを設定しておこう
         SLACK_LINK_NAMES: true # メッセージ内でのメンションを有効にする
         SLACK_MESSAGE: |
           レビューをお願いします🙏 @engineers
