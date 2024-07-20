@@ -33,4 +33,4 @@ jobs:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
-          payload-file-path: .github/slack/ci_slack_message.json
+          payload-file-path: ./.github/slack/ci_slack_message.json
