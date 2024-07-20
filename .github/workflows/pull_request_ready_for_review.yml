@@ -1,0 +1,20 @@
+on:
+  pull_request:
+    types: [ready_for_review]
+name: Slack Notification When PR become ready for review
+jobs:
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.2.0
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }} # あらかじめGithubのSettingにてSecretsを設定しておこう
+        SLACK_LINK_NAMES: true # メッセージ内でのメンションを有効にする
+        SLACK_MESSAGE: |
+          レビューをお願いします🙏 @engineers
+          <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>
+        SLACK_USERNAME: 'レビューお願いします！Bot'
+        MSG_MINIMAL: true # メッセージだけを通知文にする

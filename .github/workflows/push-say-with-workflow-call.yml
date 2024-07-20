@@ -4,6 +4,6 @@ on: push
 
 jobs:
   job-say:
-    uses: ./.github/workflows/call/workflow-call-say.yml
+    uses: ./.github/workflows/reusable_say_hello.yml
     with:
       name: 1zushun

@@ -1,8 +1,6 @@
 name: pull-request-assign-author
 
 on:
-  issues:
-    types: [opened]
   pull_request:
     types: [opened]
 jobs:
