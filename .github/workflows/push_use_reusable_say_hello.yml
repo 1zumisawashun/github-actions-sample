@@ -3,7 +3,9 @@ name: push-say-with-workflow-call
 on: push
 
 jobs:
-  job-say:
+  say-hello:
     uses: ./.github/workflows/reusable_say_hello.yml
     with:
       name: 1zushun
+  slack-notification:
+    uses: ./.github/workflows/reusable_slack_github_action.yml
