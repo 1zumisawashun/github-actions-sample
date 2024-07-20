@@ -2,40 +2,26 @@ name: dispatch-slack-incoming-webhook
 
 on:
   workflow_call:
-    # inputs:
-    #   name:
-    #     required: true
-    #     type: string
+
+env:
+  PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+  PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
+  PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
+  PULL_REQUEST_EVENT_NAME: ${{ github.event_name }}
+  PULL_REQUEST_LOGS_URL: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+  PULL_REQUEST_COMMIT_URL: ${{ github.event.pull_request.head.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }}
 
 jobs:
   slack-notification:
     runs-on: ubuntu-latest
     steps:
       - name: Slack Notification
-        uses: slackapi/slack-github-action@v1.26.0
+        if: success() || failure()
+        uses: slackapi/slack-github-action@v1.24.0
         env:
+          PULL_REQUEST_JOB_STATUS: ${{ job.status }}
+          PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && vars.COLOR_GREEN || job.status == 'failure' && vars.COLOR_RED || vars.COLOR_ORANGE }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
-          payload: |
-            {
-              "text": ":github: デプロイに成功しました！: ${{ job.status }}\n\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": ":github: デプロイに成功しました！: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                  }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "Author: <https://github.com/${{ github.event.sender.login }}|@${{ github.event.sender.login }}>"
-                    }
-                  ]
-                }
-              ]
-            }
+          payload-file-path: .github/slack/ci_slack_message.json

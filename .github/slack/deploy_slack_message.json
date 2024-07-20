@@ -1,0 +1,21 @@
+{
+  "text": ":github: デプロイに成功しました！: ${{ env.PULL_REQUEST_JOB_STATUS }}\n\n${{ env.PULL_REQUEST_URL }}",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": ":github: デプロイに成功しました！: ${{ env.PULL_REQUEST_LOGS_URL }}"
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "Author: <https://github.com/${{ env.PULL_REQUEST_AUTHOR }}|@${{ env.PULL_REQUEST_AUTHOR }}>"
+        }
+      ]
+    }
+  ]
+}

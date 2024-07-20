@@ -1,0 +1,60 @@
+{
+  "attachments": [
+    {
+      "color": "${{ env.PULL_REQUEST_JOB_STATUS_COLOR }}",
+      "fallback": "test",
+      "blocks": [
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Pull Request:*\n<${{ env.PULL_REQUEST_URL }}|${{ env.PULL_REQUEST_TITLE }}>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Status:*\n`${{ env.PULL_REQUEST_JOB_STATUS }}`"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Author:*\n`${{ env.PULL_REQUEST_AUTHOR }}`"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Event:*\n`${{ env.PULL_REQUEST_EVENT_NAME }}`"
+            }
+          ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Logs"
+              },
+              "url": "${{ env.PULL_REQUEST_LOGS_URL }}"
+            },
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Commit"
+              },
+              "url": "${{ env.PULL_REQUEST_COMMIT_URL }}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

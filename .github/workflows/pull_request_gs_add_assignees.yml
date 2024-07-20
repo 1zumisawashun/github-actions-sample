@@ -17,14 +17,14 @@
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, ready_for_review]
 
 # @see https://docs.github.com/ja/rest/issues/assignees?apiVersion=2022-11-28#add-assignees-to-an-issue
 # addAssigneesする場合はpermissions: writeが必要になる
 permissions: write-all
 
 jobs:
-  comment:
+  add-assignees:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,3 +33,8 @@ jobs:
           script: |
             const script = require('./.github/scripts/add-assignees.js')
             await script({github, context, core})
+
+  notification-with-slack-github-action:
+    uses: ./.github/workflows/reusable_slack_github_action.yml
+    with:
+      name: 1zushun

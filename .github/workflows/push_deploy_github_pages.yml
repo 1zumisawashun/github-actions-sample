@@ -12,6 +12,14 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+  PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
+  PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
+  PULL_REQUEST_EVENT_NAME: ${{ github.event_name }}
+  PULL_REQUEST_LOGS_URL: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+  PULL_REQUEST_COMMIT_URL: ${{ github.event.pull_request.head.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }}
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -85,3 +93,17 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
+  slack-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification
+        if: success() || failure()
+        uses: slackapi/slack-github-action@v1.24.0
+        env:
+          PULL_REQUEST_JOB_STATUS: ${{ job.status }}
+          PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && vars.COLOR_GREEN || job.status == 'failure' && vars.COLOR_RED || vars.COLOR_ORANGE }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+        with:
+          payload-file-path: .github/slack/deploy_slack_message.json
