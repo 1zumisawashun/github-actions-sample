@@ -7,5 +7,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Volta Actions
         uses: ./.github/actions/setupVolta/
