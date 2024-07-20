@@ -7,5 +7,6 @@ jobs:
     uses: ./.github/workflows/reusable_say_hello.yml
     with:
       name: 1zushun
+  # この場合、envの値をどうやって渡すか？になるからworkflow_runの方が丸いのかもなあ
   # slack-notification:
   #   uses: ./.github/workflows/reusable_slack_github_action.yml

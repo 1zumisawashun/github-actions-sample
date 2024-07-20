@@ -3,7 +3,7 @@ name: dispatch-slack-incoming-webhook
 on:
   workflow_call:
   workflow_run:
-    workflows: [push-say-with-workflow-call]
+    workflows: [push-say-with-workflow-call, push-deploy-github-pages]
     types: [completed]
 
 env:
@@ -18,6 +18,13 @@ jobs:
   slack-notification:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+        with:
+          # Required to detect modified files
+          # between master and PR branches.
+          fetch-depth: 0
+
       - name: Slack Notification
         if: success() || failure()
         uses: slackapi/slack-github-action@v1.24.0
