@@ -2,9 +2,8 @@ name: dispatch-slack-incoming-webhook
 
 on:
   workflow_call:
-  workflow_run:
-    workflows: [push-say-with-workflow-call, push-deploy-github-pages]
-    types: [completed]
+
+# workflow_callだと以下のenvとかが引き継げなくてinputとかsecretとかで渡す必要があるぽい
 
 env:
   PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
