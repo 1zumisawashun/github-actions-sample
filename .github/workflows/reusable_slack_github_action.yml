@@ -2,6 +2,9 @@ name: dispatch-slack-incoming-webhook
 
 on:
   workflow_call:
+  workflow_run:
+    workflows: [push-say-with-workflow-call]
+    types: [completed]
 
 env:
   PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
