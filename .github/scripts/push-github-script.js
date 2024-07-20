@@ -1,9 +1,10 @@
 module.exports = async ({ github, context, core }) => {
-  const commit = await github.rest.issues.createComment({
-    issue_number: context.issue.number,
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    body: "👋 Thanks for reporting!",
-  });
-  core.exportVariable("author", commit.data.commit.author.email);
+  await core.summary
+    .addHeading("This is the lead in sentence for the list")
+    .addList([
+      "Lets add a bullet point",
+      "Lets add a second bullet point",
+      "How about a third one?",
+    ])
+    .write();
 };
