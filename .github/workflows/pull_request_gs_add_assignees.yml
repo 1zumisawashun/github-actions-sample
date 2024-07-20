@@ -13,10 +13,15 @@
 #     steps:
 #       - uses: technote-space/assign-author@v1
 
-# おそらく下記でも動くはず
+# 上記のactionsを使用したworkflowでも問題ない
+
 on:
   pull_request:
     types: [opened]
+
+# @see https://docs.github.com/ja/rest/issues/assignees?apiVersion=2022-11-28#add-assignees-to-an-issue
+# addAssigneesする場合はpermissions: writeが必要になる
+permissions: write-all
 
 jobs:
   comment:
