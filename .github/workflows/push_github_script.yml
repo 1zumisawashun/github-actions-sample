@@ -1,0 +1,12 @@
+on: push
+
+jobs:
+  echo-input:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const script = require('./.github/scripts/push-github-script.js')
+            console.log(script({github, context}))
