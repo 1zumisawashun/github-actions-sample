@@ -1,18 +1,23 @@
-# NOTE:最低限name・description・runsがないと警告が出る
-name: composite-build-action
-
-description: ビルドアクションを共通化する
+name: Setup
+description: Setup project
 
 runs:
-  using: "composite"
+  using: composite
   steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
+
     - name: Install dependencies
       run: npm ci
       shell: bash # workflowsでは必要ないがcompositeでは必要になる
+
     - name: Check lint
       run: npm run lint
       shell: bash
-    # TODO: test
+
     - name: Run build
-      run: npm run build:prod
+      run: npm run build
       shell: bash
