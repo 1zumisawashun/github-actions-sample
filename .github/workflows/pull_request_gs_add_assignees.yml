@@ -33,6 +33,3 @@ jobs:
           script: |
             const script = require('./.github/scripts/add-assignees.js')
             await script({github, context, core})
-
-  notification-with-slack-github-action:
-    uses: ./.github/workflows/reusable_slack_github_action.yml
