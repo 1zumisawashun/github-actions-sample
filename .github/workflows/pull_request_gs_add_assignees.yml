@@ -36,5 +36,3 @@ jobs:
 
   notification-with-slack-github-action:
     uses: ./.github/workflows/reusable_slack_github_action.yml
-    with:
-      name: 1zushun
