@@ -1,0 +1,21 @@
+name: SetupWithVolta
+description: Setup project with Volta
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js with Volta
+      uses: volta-cli/action@v4
+      # https://github.com/volta-cli/action
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash # workflowsでは必要ないがcompositeでは必要になる
+
+    - name: Check lint
+      run: npm run lint
+      shell: bash
+
+    - name: Run build
+      run: npm run build
+      shell: bash

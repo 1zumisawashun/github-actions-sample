@@ -1,4 +1,4 @@
-name: composite-hello-action
+name: Hello
 description: ログアクションを共通化する
 inputs:
   target:
@@ -12,6 +12,6 @@ runs:
   using: composite
   steps:
     - run: echo "Hello, ${TARGET}!"
-      shell: bash
+      shell: bash # workflowsでは必要ないがcompositeでは必要になる
       env:
         TARGET: ${{ inputs.target }}

@@ -9,4 +9,4 @@ jobs:
         with:
           script: |
             const script = require('./.github/scripts/push-github-script.js')
-            console.log(script({github, context}))
+            await script({github, context, core})
