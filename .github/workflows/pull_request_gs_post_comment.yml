@@ -2,6 +2,8 @@ on:
   pull_request:
     types: [opened, ready_for_review, reopened]
 
+permissions: write-all
+
 jobs:
   comment:
     runs-on: ubuntu-latest
