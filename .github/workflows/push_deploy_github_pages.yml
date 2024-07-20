@@ -93,25 +93,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-
-  slack-notification:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Setup repo
-        uses: actions/checkout@v3
-        with:
-          # Required to detect modified files
-          # between master and PR branches.
-          fetch-depth: 0
-
-      - name: Slack Notification
-        if: success() || failure()
-        uses: slackapi/slack-github-action@v1.24.0
-        env:
-          PULL_REQUEST_JOB_STATUS: ${{ job.status }}
-          PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && vars.COLOR_GREEN || job.status == 'failure' && vars.COLOR_RED || vars.COLOR_ORANGE }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
-        with:
-          payload-file-path: .github/slack/deploy_slack_message.json
