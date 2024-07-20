@@ -1,6 +1,9 @@
-// @ts-check
-// /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
-export default async ({ core, context }) => {
-  core.debug("Running something at the moment");
-  return context.actor;
+module.exports = async ({ github, context, core }) => {
+  const { SHA } = process.env;
+  const commit = await github.rest.repos.getCommit({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    ref: `${SHA}`,
+  });
+  core.exportVariable("author", commit.data.commit.author.email);
 };
