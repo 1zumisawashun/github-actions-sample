@@ -12,14 +12,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
-  PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
-  PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
-  PULL_REQUEST_EVENT_NAME: ${{ github.event_name }}
-  PULL_REQUEST_LOGS_URL: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
-  PULL_REQUEST_COMMIT_URL: ${{ github.event.pull_request.head.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }}
-
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -107,6 +99,12 @@ jobs:
         env:
           PULL_REQUEST_JOB_STATUS: ${{ job.status }}
           PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && '#4caf50' || job.status == 'failure' && '#ef5350' || '#ff9800' }}
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+          PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
+          PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PULL_REQUEST_EVENT_NAME: ${{ github.event_name }}
+          PULL_REQUEST_LOGS_URL: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+          PULL_REQUEST_COMMIT_URL: ${{ github.event.pull_request.head.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
