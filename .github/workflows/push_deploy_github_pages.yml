@@ -100,10 +100,6 @@ jobs:
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
-        with:
-          # Required to detect modified files
-          # between master and PR branches.
-          fetch-depth: 0
 
       - name: Slack Notification
         if: success() || failure()
