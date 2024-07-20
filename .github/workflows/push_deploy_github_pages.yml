@@ -110,8 +110,8 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         env:
           PULL_REQUEST_JOB_STATUS: ${{ job.status }}
-          PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && vars.COLOR_GREEN || job.status == 'failure' && vars.COLOR_RED || vars.COLOR_ORANGE }}
+          PULL_REQUEST_JOB_STATUS_COLOR: ${{ job.status == 'success' && '#4caf50' || job.status == 'failure' && '#ef5350' || '#ff9800' }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
         with:
-          payload-file-path: .github/slack/deploy_slack_message.json
+          payload-file-path: .github/slack/ci2_slack_message.json

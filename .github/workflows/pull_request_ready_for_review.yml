@@ -11,7 +11,7 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      # ファイルを分割する場合はcheckoutしてファイルを取得しないと失敗する
+      # ファイルを分割する場合はcheckoutしてadd-assignees.jsファイルを取得しないと失敗する
       - uses: actions/checkout@v3
       - uses: actions/github-script@v7
         with:
@@ -56,7 +56,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
           SLACK_LINK_NAMES: true # メッセージ内でのメンションを有効にする
           SLACK_MESSAGE: |
-            レビューをお願いします🙏 @engineers
+            レビューをお願いします🙏
             <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>
           SLACK_USERNAME: "レビューお願いします！Bot"
           MSG_MINIMAL: true # メッセージだけを通知文にする
