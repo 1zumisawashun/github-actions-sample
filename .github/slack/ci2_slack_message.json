@@ -1,34 +1,38 @@
 {
+  "text": "A GitHub Action Event ${{ github.eventName }} has success",
   "attachments": [
     {
-      "color": "${{ env.PULL_REQUEST_JOB_STATUS_COLOR }}",
-      "fallback": "test",
-      "blocks": [
+      "color": "goods",
+      "fields": [
         {
-          "type": "section",
-          "fields": [
-            {
-              "type": "mrkdwn",
-              "text": "*Pull Request:*\n<${{ env.PULL_REQUEST_URL }}|${{ env.PULL_REQUEST_TITLE }}>"
-            },
-            {
-              "type": "mrkdwn",
-              "text": "*Status:*\n`${{ env.PULL_REQUEST_JOB_STATUS }}`"
-            }
-          ]
+          "title": "Repository",
+          "short": false,
+          "value": "<${{ github.payload.repository.html_url }}|${{ github.payload.repository.full_name }}>"
         },
         {
-          "type": "section",
-          "fields": [
-            {
-              "type": "mrkdwn",
-              "text": "*Author:*\n`${{ env.PULL_REQUEST_AUTHOR }}`"
-            },
-            {
-              "type": "mrkdwn",
-              "text": "*Event:*\n`${{ env.PULL_REQUEST_EVENT_NAME }}`"
-            }
-          ]
+          "title": "Ref",
+          "short": false,
+          "value": "${{ github.ref }}"
+        },
+        {
+          "title": "Commit",
+          "short": false,
+          "value": "<${{ github.payload.head_commit.url }}|${{ github.sha }}>"
+        },
+        {
+          "title": "Author",
+          "short": false,
+          "value": "${{ github.payload.head_commit.author.name }}"
+        },
+        {
+          "title": "Message",
+          "short": false,
+          "value": "${{ github.payload.head_commit.message }}"
+        },
+        {
+          "title": "Workflow",
+          "short": false,
+          "value": "<${{ github.payload.repository.html_url }}/actions/runs/${{ github.runId }}|${{ github.workflow }}>"
         }
       ]
     }
