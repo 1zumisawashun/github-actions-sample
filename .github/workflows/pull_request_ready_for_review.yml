@@ -7,15 +7,16 @@ name: Slack Notification When PR become ready for review
 jobs:
   add-assignees:
     runs-on: ubuntu-latest
-    if: ${{ ! contains(fromJson('["renovate[bot]", "dependabot[bot]"]'), github.actor) }}
+    # https://zenn.dev/snowcait/articles/d6bc5eafd8ab75#%E8%A3%9C%E8%B6%B3%3A-if
+    if: ${{ ! contains(fromJson('["renovate[bot]", "dependabot[bot]"]'), github.actor) && toJSON(github.event.pull_request.assignees) == '[]' }}
     permissions:
       pull-requests: write
     steps:
-      # ファイルを分割する場合はcheckoutしてadd-assignees.jsファイルを取得しないと失敗する
       - uses: actions/checkout@v3
+        with:
+          sparse-checkout: .github/scripts/add-assignees.js
       - uses: actions/github-script@v7
         with:
-          # @see https://docs.github.com/ja/rest/issues/assignees?apiVersion=2022-11-28#add-assignees-to-an-issue
           script: |
             const script = require('./.github/scripts/add-assignees.js')
             await script({github, context, core})
@@ -27,18 +28,21 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          sparse-checkout: .github/scripts/create-comment.js
       - uses: actions/github-script@v7
         with:
-          # @see https://docs.github.com/ja/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
           script: |
             const script = require('./.github/scripts/create-comment.js')
             await script({github, context, core})
 
   write-summary:
     runs-on: ubuntu-latest
+    if: ${{ ! contains(fromJson('["renovate[bot]", "dependabot[bot]"]'), github.actor) }}
     steps:
-      # ファイルを分割する場合はcheckoutしてファイルを取得しないと失敗する
       - uses: actions/checkout@v3
+        with:
+          sparse-checkout: .github/scripts/write-summary.js
       - uses: actions/github-script@v7
         with:
           script: |
@@ -46,17 +50,15 @@ jobs:
             await script({github, context, core})
 
   slack-notification:
-    name: Slack Notification
     runs-on: ubuntu-latest
+    if: ${{ ! contains(fromJson('["renovate[bot]", "dependabot[bot]"]'), github.actor) }}
     steps:
       - uses: actions/checkout@v2.2.0
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+      - uses: rtCamp/action-slack-notify@v2
+        # https://book.st-hakky.com/hakky/github-actions-result-notification-to-slack/
+        # https://zenn.dev/vcook/articles/1df885f899ff88
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
-          SLACK_LINK_NAMES: true # メッセージ内でのメンションを有効にする
           SLACK_MESSAGE: |
             レビューをお願いします🙏
-            <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>
-          SLACK_USERNAME: "レビューお願いします！Bot"
-          MSG_MINIMAL: true # メッセージだけを通知文にする
+            <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}> by ${{ github.event.pull_request.user.login }}

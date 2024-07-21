@@ -2,7 +2,7 @@
   "text": "A GitHub Action Event ${{ github.eventName }} has success",
   "attachments": [
     {
-      "color": "goods",
+      "color": "${{ env.PULL_REQUEST_JOB_STATUS_COLOR }}",
       "fields": [
         {
           "title": "Repository",
