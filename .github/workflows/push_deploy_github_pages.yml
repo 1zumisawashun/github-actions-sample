@@ -29,6 +29,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # @see https://github.com/Kesin11/actions-timeline
+      - uses: Kesin11/actions-timeline@v2
+        with:
+          github-token: ${{ github.token }}
+          show-waiting-runner: true
       - name: Checkout
         uses: actions/checkout@v3
       - name: Detect package manager
